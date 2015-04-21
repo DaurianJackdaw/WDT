@@ -12,4 +12,6 @@ class Post
   field :replies_count, type: Integer, default: 0
 
   has_many :replies, dependent: :destroy
+  belongs_to :author, class_name: "User"
+
 end
