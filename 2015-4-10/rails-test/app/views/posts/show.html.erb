@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h3><%= @post.title %></h3>
 
 <p>
@@ -7,13 +5,17 @@
 </p>
 
 <div class="pull-right">
-  <%= action_links.html_safe? %>
+  <%= @post.author.email if @post.author %>,
+  <%= action_links %>
 </div>
 
 <h3>Reply (<%= @post.replies_count %>):</h3>
 <ul>
   <% @post.replies.each do |reply| %>
-  <li><%= reply.body %></li>
+  <li>
+    <strong><%= reply.author.try(:email) or "Anonymous" %>:</strong>
+    <%= reply.body %>
+  </li>
   <% end -%>
 </ul>
 

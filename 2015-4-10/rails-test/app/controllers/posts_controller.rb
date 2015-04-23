@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy, :reply]
   before_action :authenticate_user!
+  load_and_authorize_resource
 
   # GET /posts
   def index
@@ -25,7 +26,10 @@ class PostsController < ApplicationController
   end
 
   def reply
-    @post.replies.create(params[:reply].permit(:body))
+    @post.replies.create(
+      body: params[:reply][:body],
+      author: current_user
+    )
     redirect_to :back, notice: "Reply created successfully"
   end
 
@@ -41,6 +45,7 @@ class PostsController < ApplicationController
   # POST /posts
   def create
     @post = Post.new(post_params)
+    @post.author = current_user
 
     if @post.save
       redirect_to @post, notice: 'Post was successfully created.'

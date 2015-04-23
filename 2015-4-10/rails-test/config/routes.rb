@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, path: "auth"
+  resources :users
   resources :posts do
     collection  { get   "hottest" }
     member      { post  "reply"   }
